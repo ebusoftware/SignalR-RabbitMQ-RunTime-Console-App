@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+      <script src="signalr.min.js"></script>
+      <script src="jquery.min.js"></script>
+<script>
+      $(document).ready(() =>{
+      var connection= new SignalR.HubConnectionBuilder()
+      .withUrl("https://localhost:7213/messagehub")
+      .build();
+
+      connection.start();//baglantiyi olusturduk
+      connection.on("receiveMessage",message =>{
+            $("div").html(message);
+            $("div").fadeIn(2000,() => {});
+
+      }); //ilgili fonksiyona baglanip dinliyor.
+
+
+
+      $("button").click(() =>{
+      let email = $("#email").val();
+      let message = $("#message").val();
+      $.post("https://localhost:7213/api/messages",{
+            Email:email,
+            Message:message
+      },() =>{
+            
+      })
+      });
+      })
+</script>
+</head>
+<body>
+      <div style="background-color: indigo ;display: none;"></div>
+      <input type="text" id="email" placeholder="E-mail">
+      <input type="text" id="message" placeholder="Message">
+      <button>Gönder</button>
+</body>
+</html>
